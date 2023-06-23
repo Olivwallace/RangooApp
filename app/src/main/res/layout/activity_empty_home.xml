@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="10dp"
+    android:orientation="vertical"
+    tools:context=".EmptyHomeActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Aparentemente você está sem fome essa semana!"
+        android:textSize="25dp"
+        android:layout_marginTop="80dp"
+        android:gravity="center"
+        android:textColor="@color/black"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/camaleao_cozinheiro"
+        android:layout_gravity="center"
+        android:layout_marginTop="70dp"/>
+
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="250dp"
+        android:layout_height="57dp"
+        android:text="Deixe-me ver as opções"
+        android:textAllCaps="false"
+        android:layout_gravity="center"
+        android:layout_marginTop="80dp"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/brave"/>
+
+</LinearLayout>
