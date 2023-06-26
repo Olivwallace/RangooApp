@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_margin="10dp"
     android:orientation="vertical"
-    tools:context=".SignUpActivity">
+    tools:context=".Activities.SignUpActivity">
 
     <ImageView
         android:layout_width="wrap_content"
@@ -33,6 +33,7 @@
         android:background="@drawable/edittext_border"
         android:layout_margin="5dp"
         />
+
     <EditText
         android:id="@+id/txt_cell"
         android:layout_width="match_parent"
@@ -42,6 +43,7 @@
         android:background="@drawable/edittext_border"
         android:layout_margin="5dp"
         />
+
     <EditText
         android:id="@+id/txt_adress"
         android:layout_width="match_parent"
@@ -51,15 +53,23 @@
         android:background="@drawable/edittext_border"
         android:layout_margin="5dp"
         />
+
     <EditText
         android:id="@+id/txt_birth"
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:clickable="true"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:inputType="none"
         android:hint="Aniversário"
         android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:drawableEnd="@drawable/ic_calendar"
         android:background="@drawable/edittext_border"
         android:layout_margin="5dp"
         />
+
     <EditText
         android:id="@+id/txt_email"
         android:layout_width="match_parent"
@@ -69,6 +79,7 @@
         android:background="@drawable/edittext_border"
         android:layout_margin="5dp"
         />
+
     <EditText
         android:id="@+id/txt_password"
         android:layout_width="match_parent"
