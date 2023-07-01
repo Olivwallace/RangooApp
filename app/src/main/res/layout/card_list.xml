@@ -16,8 +16,8 @@
         <ImageView
             android:id="@+id/cardList_image"
             android:src="@drawable/franguinho"
-            android:layout_width="150dp"
-            android:layout_height="150dp"/>
+            android:layout_width="135dp"
+            android:layout_height="135dp"/>
 
         <RelativeLayout
             android:orientation="vertical"
@@ -29,6 +29,7 @@
                 android:id="@+id/cardList_name"
                 android:text="Franguinho"
                 android:textStyle="bold"
+                android:elegantTextHeight="true"
                 android:textColor="@color/dark"
                 android:textSize="25dp"
                 android:layout_marginTop="5dp"

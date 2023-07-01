@@ -1,11 +1,15 @@
 package com.example.rangoo.Activities;
 
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.rangoo.Adapter.HomeAdapter;
 import com.example.rangoo.Model.Food;
+import com.example.rangoo.R;
 import com.example.rangoo.databinding.ActivityHomeListBinding;
 
 import java.util.ArrayList;
@@ -23,6 +27,14 @@ public class HomeListActivity extends AppCompatActivity {
 
         homeAdapter = new HomeAdapter(getUserList());
         binding.recyclerView.setAdapter(homeAdapter);
+
+        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+
+        binding.btnOpenDrawer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { drawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
     }
 
     protected ArrayList<Food> getUserList(){
