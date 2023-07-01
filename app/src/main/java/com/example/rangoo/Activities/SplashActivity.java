@@ -21,7 +21,8 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
                 //GoTo.signInView(SplashActivity.this);
-                GoTo.profileView(SplashActivity.this);
+                //GoTo.profileView(SplashActivity.this);
+                GoTo.homeView(SplashActivity.this);
             }
         }, _DELAY_INTENT);
 
