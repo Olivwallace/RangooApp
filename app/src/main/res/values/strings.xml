@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Rangoo</string>
+    <string name="_COM_RANGO_PREFERENCES">com.rangoo.user.session</string>
 </resources>
