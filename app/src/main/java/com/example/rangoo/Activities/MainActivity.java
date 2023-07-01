@@ -2,6 +2,7 @@ package com.example.rangoo.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,7 +16,10 @@ import com.example.rangoo.Interfaces.AuthCallback;
 import com.example.rangoo.Model.LoginData;
 import com.example.rangoo.Network.FirebaseNetwork;
 import com.example.rangoo.Network.GoogleNetwork;
+import com.example.rangoo.R;
+import com.example.rangoo.Utils.GoTo;
 import com.example.rangoo.databinding.ActivityLoginBinding;
+import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -44,7 +48,8 @@ public class MainActivity extends AppCompatActivity {
         binding.resetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Solicitação de redefinição de senha enviada para seu email.", Toast.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(android.R.id.content), "Solicitação de redefinição de senha enviada para seu email.", Snackbar.LENGTH_SHORT)
+                        .setBackgroundTint(getColor(R.color.pumpkin)).show();
             }
         });
 
@@ -68,14 +73,13 @@ public class MainActivity extends AppCompatActivity {
         google.signIn(this, startActivity,  new AuthCallback() {
             @Override
             public void onSuccess(String UID) {
-                Toast.makeText(getApplicationContext(),"Acessando!", Toast.LENGTH_SHORT).show();
                 goToHomeView(UID);
             }
 
             @Override
             public void onError(String error) {
                 Log.d("FALHA LOGIN: ", error);
-                Toast.makeText(getApplicationContext(),"Falha ao acessar com conta Google!", Toast.LENGTH_SHORT).show();
+                errorMensage("Usuario Google Inválido");
             }
         });
     }
@@ -84,22 +88,35 @@ public class MainActivity extends AppCompatActivity {
         firebase.signIn(new LoginData(email, senha), new AuthCallback() {
             @Override
             public void onSuccess(String UID) {
-                Toast.makeText(getApplicationContext(),"Acessando!", Toast.LENGTH_SHORT).show();
                 goToHomeView(UID);
             }
 
             @Override
             public void onError(String error) {
                 Log.d("FALHA LOGIN: ", error);
-                Toast.makeText(getApplicationContext(),"Falha ao acessar conta!", Toast.LENGTH_SHORT).show();
+                errorMensage("Usuário Inválido: Verifique os campos e tente novamente!");
             }
         });
     }
 
     protected void goToHomeView(String UID){
-        Intent intent = new Intent(this, EmptyHomeActivity.class);
-        intent.putExtra("User", UID);
-        startActivity(intent);
+        Snackbar.make(findViewById(android.R.id.content), "Usuario Autenticado com Sucesso", Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(getColor(R.color.vegan)).show();
+        saveUID(UID);
+        GoTo.homeView(MainActivity.this);
+    }
+
+    protected void errorMensage(String msg){
+        Snackbar.make(findViewById(android.R.id.content), msg, Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(getColor(R.color.baron)).show();
+    }
+
+    protected void saveUID(String UID){
+        SharedPreferences preferences = getSharedPreferences(getString(R.string._COM_RANGO_PREFERENCES), MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("UID", UID);
+        editor.putBoolean("isLoggedIn", true);
+        editor.apply();
     }
 
     //----------------------- Activity Result

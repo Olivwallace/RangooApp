@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 public class User {
+
     private String name;
     private String phone;
     private String address;
@@ -12,6 +13,8 @@ public class User {
 
     @Exclude
     private LoginData loginData;
+
+    public User(){}
 
     public User(String name, String phone, String address, String birthday, String email, String password){
         setName(name);
@@ -39,6 +42,13 @@ public class User {
         this.birthday = birthday;
     }
 
+    @Exclude
+    public void setEmail(String email) { if(loginData != null) loginData.setEmail(email);  }
+
+    @Exclude
+    public void setPassword(String password) { if (loginData != null) loginData.setPassword(password); }
+
+    @Exclude
     public void setLoginData(LoginData loginData){
         this.loginData = loginData;
     }
@@ -59,6 +69,13 @@ public class User {
         return birthday;
     }
 
+    @Exclude
+    public String getEmail() { return  loginData.getEmail(); }
+
+    @Exclude
+    public String getPassword() { return  loginData.getPassword(); }
+
+    @Exclude
     public LoginData getLoginData() { return  loginData; }
 
     // ---------------- Utils

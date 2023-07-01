@@ -1,8 +1,14 @@
 package com.example.rangoo.Network;
 
+import android.net.Uri;
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.example.rangoo.Interfaces.AuthCallback;
+import com.example.rangoo.Interfaces.GetUserCallback;
+import com.example.rangoo.Interfaces.UploadImageCallback;
+import com.example.rangoo.Interfaces.UriImageCallback;
 import com.example.rangoo.Model.LoginData;
 import com.example.rangoo.Model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -11,13 +17,20 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 public class FirebaseNetwork {
 
     private FirebaseAuth auth;
     private DatabaseReference database;
+    private StorageReference storage;
 
     /***
      * Inicializa a instância do FirebaseAuth.
@@ -37,6 +50,10 @@ public class FirebaseNetwork {
         if (database == null) {
             database = FirebaseDatabase.getInstance().getReference().child(data);
         }
+    }
+
+    private void initStorage(String caminho){
+        storage = FirebaseStorage.getInstance().getReference().child(caminho);
     }
 
     /***
@@ -115,11 +132,84 @@ public class FirebaseNetwork {
                 });
     }
 
+    public void getDataUser(String UID, GetUserCallback callback) {
+        initDatabase("users");
+        Log.d("UID", UID);
+        if(database != null){
+            database.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    callback.onSuccess(snapshot.child(UID));
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    callback.onError(error.getMessage());
+                }
+            });
+        }
+    }
+
+    public void getWeekMenu(){
+        initDatabase("menu");
+        if(database != null){
+            database.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    Log.d("Snapshot", snapshot.toString());
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
+    }
+
+    public void getUriImageUser(String UID, UriImageCallback callback){
+        initStorage("imageUsers/"+ UID + ".jpg");
+        if(storage != null){
+            storage.getDownloadUrl()
+                    .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            callback.onSuccess(uri);
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            callback.onError(e.getLocalizedMessage());
+                        }
+                    });
+        }
+    }
+
+    public void uploadImageUser(Uri image, String UID, UploadImageCallback callback){
+        initStorage("imageUsers/"+ UID + ".jpg");
+        if (storage != null){
+            UploadTask task = storage.putFile(image);
+            task.addOnSuccessListener(taskSnapshot -> {
+                callback.onSuccess(true);
+            }).addOnFailureListener(e -> {
+                callback.onError(e.getLocalizedMessage());
+            });
+        }
+    }
+
+
     /***
      * Realiza o logout do usuário.
      */
-    public void signOut() {
+    public void signOut(AuthCallback callback) {
         initAuth();
         auth.signOut();
+
+        if(auth.getCurrentUser() != null){
+           callback.onError(auth.getUid());
+        } else {
+            callback.onSuccess("");
+        }
     }
 }
