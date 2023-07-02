@@ -1,6 +1,7 @@
 package com.example.rangoo.Adapter;
 
 import android.content.res.ColorStateList;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeViewHolder> {
         this.list = list;
     }
 
+    public ArrayList<Food> getList() { return  list; }
+
     @NonNull
     @Override
     public HomeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -35,6 +38,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeViewHolder> {
         Food food = list.get(position);
         holder.bind(food);
         holder.itemView.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(holder.itemView.getContext(), colors[position % colors.length])));
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("CLIQUE", "DETECTADO");
+            }
+        });
     }
 
     @Override

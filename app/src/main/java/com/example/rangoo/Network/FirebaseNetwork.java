@@ -6,7 +6,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.rangoo.Interfaces.AuthCallback;
-import com.example.rangoo.Interfaces.GetUserCallback;
+import com.example.rangoo.Interfaces.GetDataCallback;
 import com.example.rangoo.Interfaces.UploadImageCallback;
 import com.example.rangoo.Interfaces.UriImageCallback;
 import com.example.rangoo.Model.LoginData;
@@ -132,7 +132,7 @@ public class FirebaseNetwork {
                 });
     }
 
-    public void getDataUser(String UID, GetUserCallback callback) {
+    public void getDataUser(String UID, GetDataCallback callback) {
         initDatabase("users");
         Log.d("UID", UID);
         if(database != null){
@@ -150,18 +150,18 @@ public class FirebaseNetwork {
         }
     }
 
-    public void getWeekMenu(){
+    public void getWeekMenu(GetDataCallback callback){
         initDatabase("menu");
         if(database != null){
             database.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    Log.d("Snapshot", snapshot.toString());
+                    callback.onSuccess(snapshot);
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-
+                    callback.onError(error.getMessage());
                 }
             });
         }

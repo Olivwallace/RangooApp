@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"/>
 
         <TextView
-            android:text="Email"
+            android:text="@string/email"
             android:textSize="15dp"
             android:layout_marginTop="30dp"
             android:layout_width="wrap_content"
@@ -55,7 +55,7 @@
             android:layout_height="wrap_content"/>
 
         <TextView
-            android:text="Aniversário"
+            android:text="@string/aniversario"
             android:textSize="15dp"
             android:layout_marginTop="20dp"
             android:layout_width="wrap_content"
@@ -71,7 +71,7 @@
             android:layout_height="wrap_content"/>
 
         <TextView
-            android:text="Endereço"
+            android:text="@string/endereco"
             android:textSize="15dp"
             android:layout_marginTop="20dp"
             android:layout_width="wrap_content"
@@ -87,7 +87,7 @@
             android:layout_height="wrap_content"/>
 
         <TextView
-            android:text="Contato"
+            android:text="@string/contato"
             android:textSize="15dp"
             android:layout_marginTop="20dp"
             android:layout_width="wrap_content"
@@ -106,7 +106,7 @@
 
     <Button
         android:id="@+id/btn_recoverPass"
-        android:text="Recuperar Senha"
+        android:text="@string/recuperar_senha"
         android:textColor="@color/gray"
         android:background="@color/transparent"
         android:layout_width="wrap_content"
@@ -114,7 +114,7 @@
 
     <Button
         android:id="@+id/btn_logOut"
-        android:text="Sair"
+        android:text="@string/sair"
         android:textColor="@color/baron"
         android:background="@color/transparent"
         android:layout_width="wrap_content"

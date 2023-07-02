@@ -21,7 +21,7 @@ import com.example.rangoo.Utils.GoTo;
 import com.example.rangoo.databinding.ActivityLoginBinding;
 import com.google.android.material.snackbar.Snackbar;
 
-public class MainActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     private  GoogleNetwork google;
     private FirebaseNetwork firebase;
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         binding.btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, SignUpActivity.class);
+                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
                 startActivity(intent);
             }
         });
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         binding.resetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(findViewById(android.R.id.content), "Solicitação de redefinição de senha enviada para seu email.", Snackbar.LENGTH_SHORT)
+                Snackbar.make(findViewById(android.R.id.content), R.string.solicitacao_redefinicao_enviada, Snackbar.LENGTH_SHORT)
                         .setBackgroundTint(getColor(R.color.pumpkin)).show();
             }
         });
@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onError(String error) {
                 Log.d("FALHA LOGIN: ", error);
-                errorMensage("Usuario Google Inválido");
+                errorMessage(getString(R.string.user_google_error));
             }
         });
     }
@@ -94,19 +94,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onError(String error) {
                 Log.d("FALHA LOGIN: ", error);
-                errorMensage("Usuário Inválido: Verifique os campos e tente novamente!");
+                errorMessage(getString(R.string.user_login_error));
             }
         });
     }
 
     protected void goToHomeView(String UID){
-        Snackbar.make(findViewById(android.R.id.content), "Usuario Autenticado com Sucesso", Snackbar.LENGTH_SHORT)
+        Snackbar.make(findViewById(android.R.id.content), R.string.user_login_success, Snackbar.LENGTH_SHORT)
                 .setBackgroundTint(getColor(R.color.vegan)).show();
         saveUID(UID);
-        GoTo.homeView(MainActivity.this);
+        GoTo.homeView(LoginActivity.this);
     }
 
-    protected void errorMensage(String msg){
+    protected void errorMessage(String msg){
         Snackbar.make(findViewById(android.R.id.content), msg, Snackbar.LENGTH_SHORT)
                 .setBackgroundTint(getColor(R.color.baron)).show();
     }
@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
                     google.handleResultSignIn(intent);
                 }else{
                     Log.d("ERRO: ", "" + result.getResultCode());
-                    Toast.makeText(getApplicationContext(), "Erro ao tentar conectar com Google!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.error_login_google, Toast.LENGTH_SHORT).show();
                 }
             }
     );

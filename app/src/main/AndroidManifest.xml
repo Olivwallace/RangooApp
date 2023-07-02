@@ -14,6 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Rangoo"
         tools:targetApi="31">
+
+        <activity android:name=".Activities.WeekMenuActivity"
+            android:exported="false"/>
         <activity
             android:name=".Activities.HomeListActivity"
             android:exported="false" />
@@ -27,7 +30,7 @@
             android:name=".Activities.SignUpActivity"
             android:exported="false" />
         <activity
-            android:name=".Activities.MainActivity"
+            android:name=".Activities.LoginActivity"
             android:exported="false" />
         <activity
             android:name=".Activities.SplashActivity"

@@ -17,7 +17,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.rangoo.Interfaces.AuthCallback;
-import com.example.rangoo.Interfaces.GetUserCallback;
+import com.example.rangoo.Interfaces.GetDataCallback;
 import com.example.rangoo.Interfaces.UploadImageCallback;
 import com.example.rangoo.Interfaces.UriImageCallback;
 import com.example.rangoo.Network.FirebaseNetwork;
@@ -58,7 +58,7 @@ public class ProfileActivity extends AppCompatActivity {
         binding.btnRecoverPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(findViewById(android.R.id.content), "Solicitação de redefinição de senha enviada para seu email.", Snackbar.LENGTH_SHORT)
+                Snackbar.make(findViewById(android.R.id.content), R.string.solicitacao_redefinicao_enviada, Snackbar.LENGTH_SHORT)
                         .setBackgroundTint(getColor(R.color.pumpkin)).show();
             }
         });
@@ -74,7 +74,7 @@ public class ProfileActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(String error) {
-                        Snackbar.make(findViewById(android.R.id.content), "Error ao efetuar signOut, tente novamente", Snackbar.LENGTH_SHORT)
+                        Snackbar.make(findViewById(android.R.id.content), R.string.error_signout, Snackbar.LENGTH_SHORT)
                                 .setBackgroundTint(getColor(R.color.baron)).show();
                     }
                 });
@@ -84,7 +84,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     protected void getDataUser(String UID){
-        firebase.getDataUser(UID, new GetUserCallback() {
+        firebase.getDataUser(UID, new GetDataCallback() {
 
             @Override
             public void onSuccess(DataSnapshot data) {
@@ -132,14 +132,14 @@ public class ProfileActivity extends AppCompatActivity {
         firebase.uploadImageUser(image, preferences.getString("UID", ""), new UploadImageCallback() {
             @Override
             public void onSuccess(boolean success) {
-                Snackbar.make(findViewById(android.R.id.content), "Imagem alterada com sucesso!", Snackbar.LENGTH_SHORT)
+                Snackbar.make(findViewById(android.R.id.content), R.string.imagem_alterada, Snackbar.LENGTH_SHORT)
                         .setBackgroundTint(getColor(R.color.vegan)).show();
             }
 
             @Override
             public void onError(String error) {
                 Log.e("FALHA UPLOAD IMAGE: ", error);
-                Snackbar.make(findViewById(android.R.id.content), "Falha ao realizar salvamento da imagem!", Snackbar.LENGTH_SHORT)
+                Snackbar.make(findViewById(android.R.id.content), R.string.error_update_imagem, Snackbar.LENGTH_SHORT)
                         .setBackgroundTint(getColor(R.color.baron)).show();
             }
         });
@@ -154,7 +154,7 @@ public class ProfileActivity extends AppCompatActivity {
                     uploadImage(result.getData().getData());
                 }else{
                     Log.d("ERRO: ", "" + result.getResultCode());
-                    Snackbar.make(findViewById(android.R.id.content), "Falha ao realizar salvamento da imagem!", Snackbar.LENGTH_SHORT)
+                    Snackbar.make(findViewById(android.R.id.content), R.string.error_save_imagem, Snackbar.LENGTH_SHORT)
                             .setBackgroundTint(getColor(R.color.baron)).show();
                 }
             }

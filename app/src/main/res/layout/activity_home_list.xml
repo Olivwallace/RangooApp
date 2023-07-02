@@ -50,6 +50,7 @@
             android:layout_width="390dp"
             android:layout_height="match_parent"
             android:layout_marginTop="15dp"
+            android:paddingTop="20dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/card_home"/>
     </LinearLayout>
@@ -80,16 +81,16 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btn_addMore"
+        android:visibility="invisible"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
+        android:layout_centerHorizontal="true"
         android:tint="@color/baron"
         android:backgroundTint="@color/white"
         app:rippleColor="@color/soft"
         android:src="@drawable/baseline_add_24"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="50dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"/>
 
 
 
