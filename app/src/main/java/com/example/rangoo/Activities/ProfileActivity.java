@@ -18,7 +18,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.rangoo.Interfaces.AuthCallback;
 import com.example.rangoo.Interfaces.GetDataCallback;
-import com.example.rangoo.Interfaces.UploadImageCallback;
+import com.example.rangoo.Interfaces.SaveDataCallback;
 import com.example.rangoo.Interfaces.UriImageCallback;
 import com.example.rangoo.Network.FirebaseNetwork;
 import com.example.rangoo.R;
@@ -129,7 +129,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     protected void uploadImage(Uri image) {
-        firebase.uploadImageUser(image, preferences.getString("UID", ""), new UploadImageCallback() {
+        firebase.uploadImageUser(image, preferences.getString("UID", ""), new SaveDataCallback() {
             @Override
             public void onSuccess(boolean success) {
                 Snackbar.make(findViewById(android.R.id.content), R.string.imagem_alterada, Snackbar.LENGTH_SHORT)

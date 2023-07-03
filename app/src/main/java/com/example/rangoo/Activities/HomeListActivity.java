@@ -7,14 +7,17 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rangoo.Adapter.HomeAdapter;
+import com.example.rangoo.Interfaces.AdapterListener;
 import com.example.rangoo.Interfaces.ConfirmCallback;
+import com.example.rangoo.Interfaces.GetListCallback;
 import com.example.rangoo.Model.Food;
+import com.example.rangoo.Network.FirebaseNetwork;
 import com.example.rangoo.R;
 import com.example.rangoo.Utils.GoTo;
 import com.example.rangoo.databinding.ActivityHomeListBinding;
@@ -25,6 +28,8 @@ public class HomeListActivity extends AppCompatActivity {
 
     ActivityHomeListBinding binding;
     HomeAdapter homeAdapter;
+    FirebaseNetwork firebase;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,10 +37,34 @@ public class HomeListActivity extends AppCompatActivity {
         binding = ActivityHomeListBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        homeAdapter = new HomeAdapter(getUserList());
-        binding.recyclerView.setAdapter(homeAdapter);
+        firebase = new FirebaseNetwork();
 
-        ItemTouchHelper helper = new ItemTouchHelper(new HomeListTouchHandler(0, ItemTouchHelper.LEFT));
+        firebase.getUserList(getIntent().getStringExtra("UID"), new GetListCallback() {
+            @Override
+            public void onSuccess(ArrayList<Food> list) {
+
+                homeAdapter = new HomeAdapter(list);
+                binding.recyclerView.setAdapter(homeAdapter);
+
+                homeAdapter.setAdapterListener(new AdapterListener() {
+                    @Override
+                    public void onCardClick(Food item) {
+                        GoTo.detailsView(HomeListActivity.this, item);
+                    }
+
+                    @Override
+                    public void onAddClick(Food item) { /* Não implemetado nesse contexto. */  }
+                });
+            }
+
+            @Override
+            public void onError(String error) {
+
+            }
+        });
+
+
+        ItemTouchHelper helper = new ItemTouchHelper(new HomeListTouchHandler(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT));
         helper.attachToRecyclerView(binding.recyclerView);
 
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
@@ -54,15 +83,6 @@ public class HomeListActivity extends AppCompatActivity {
         });
     }
 
-    protected ArrayList<Food> getUserList(){
-        ArrayList<Food> arrayList = new ArrayList<>();
-        arrayList.add(new Food("id1","Franguinho", " Frango cozido em um molho saboroso a base de tomate e outras combinações de ingredientes.", "O frango ao molho foi feito com pedaços de frango, temperados com sal, pimenta e outros temperos a gosto, cozidos em um molho que contém ingredientes como tomate, cebola, alho, ervas, especiarias.", "https://firebasestorage.googleapis.com/v0/b/rangooapp-16032.appspot.com/o/imagens%2Ffranguinho.png?alt=media&token=811d5335-f23c-48a2-bf9d-b610d0983adb"));
-        arrayList.add(new Food("id2", "Arroz Doce", "Arroz doce aromatizado e com uma pitada adicional de canela por cima.", "O arroz doce feito com arroz de grão curto, leite, açúcar, canela e casca de limão para dar sabor extra.", "https://firebasestorage.googleapis.com/v0/b/rangooapp-16032.appspot.com/o/imagens%2FarrozDoce.jpeg?alt=media&token=cddd2e36-e657-4da2-b0fa-b552f4b9e706" ));
-        arrayList.add(new Food("id1","Franguinho", " Frango cozido em um molho saboroso a base de tomate e outras combinações de ingredientes.", "O frango ao molho foi feito com pedaços de frango, temperados com sal, pimenta e outros temperos a gosto, cozidos em um molho que contém ingredientes como tomate, cebola, alho, ervas, especiarias.", "https://firebasestorage.googleapis.com/v0/b/rangooapp-16032.appspot.com/o/imagens%2Ffranguinho.png?alt=media&token=811d5335-f23c-48a2-bf9d-b610d0983adb"));
-        arrayList.add(new Food("id2", "Arroz Doce", "Arroz doce aromatizado e com uma pitada adicional de canela por cima. Arroz doce aromatizado e com uma pitada adicional de canela por cima. Arroz doce aromatizado e com uma pitada adicional de canela por cima. Arroz doce aromatizado e com uma pitada adicional de canela por cima. Arroz doce aromatizado e com uma pitada adicional de canela por cima. Arroz doce aromatizado e com uma pitada adicional de canela por cima. Arroz doce aromatizado e com uma pitada adicional de canela por cima. Arroz doce aromatizado e com uma pitada adicional de canela por cima. Arroz doce aromatizado e com uma pitada adicional de canela por cima.", "O arroz doce feito com arroz de grão curto, leite, açúcar, canela e casca de limão para dar sabor extra.", "https://firebasestorage.googleapis.com/v0/b/rangooapp-16032.appspot.com/o/imagens%2FarrozDoce.jpeg?alt=media&token=cddd2e36-e657-4da2-b0fa-b552f4b9e706" ));
-        arrayList.add(new Food("id1","Franguinho", " Frango cozido em um molho saboroso a base de tomate e outras combinações de ingredientes.", "O frango ao molho foi feito com pedaços de frango, temperados com sal, pimenta e outros temperos a gosto, cozidos em um molho que contém ingredientes como tomate, cebola, alho, ervas, especiarias.", "https://firebasestorage.googleapis.com/v0/b/rangooapp-16032.appspot.com/o/imagens%2Ffranguinho.png?alt=media&token=811d5335-f23c-48a2-bf9d-b610d0983adb"));
-        return arrayList;
-    }
 
     protected void confirmDialog(ConfirmCallback callback) {
 
@@ -88,7 +108,6 @@ public class HomeListActivity extends AppCompatActivity {
 
         dialog.create().show();
     }
-
 
     private class HomeListTouchHandler extends ItemTouchHelper.SimpleCallback {
 
@@ -131,5 +150,4 @@ public class HomeListActivity extends AppCompatActivity {
             });
         }
     }
-
 }

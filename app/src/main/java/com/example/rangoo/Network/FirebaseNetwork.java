@@ -7,8 +7,10 @@ import androidx.annotation.NonNull;
 
 import com.example.rangoo.Interfaces.AuthCallback;
 import com.example.rangoo.Interfaces.GetDataCallback;
-import com.example.rangoo.Interfaces.UploadImageCallback;
+import com.example.rangoo.Interfaces.GetListCallback;
+import com.example.rangoo.Interfaces.SaveDataCallback;
 import com.example.rangoo.Interfaces.UriImageCallback;
+import com.example.rangoo.Model.Food;
 import com.example.rangoo.Model.LoginData;
 import com.example.rangoo.Model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -26,6 +28,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
+
 public class FirebaseNetwork {
 
     private FirebaseAuth auth;
@@ -36,9 +40,7 @@ public class FirebaseNetwork {
      * Inicializa a instância do FirebaseAuth.
      */
     private void initAuth() {
-        if (auth == null) {
-            auth = FirebaseAuth.getInstance();
-        }
+        auth = FirebaseAuth.getInstance();
     }
 
     /***
@@ -47,9 +49,7 @@ public class FirebaseNetwork {
      * @param data O caminho para o nó no banco de dados do Firebase.
      */
     private void initDatabase(String data) {
-        if (database == null) {
-            database = FirebaseDatabase.getInstance().getReference().child(data);
-        }
+        database = FirebaseDatabase.getInstance().getReference().child(data);
     }
 
     private void initStorage(String caminho){
@@ -108,6 +108,24 @@ public class FirebaseNetwork {
         }
     }
 
+    public void saveListUser(String UID, ArrayList<String> list, SaveDataCallback callback){
+        initDatabase("usersList");
+        if (database != null) {
+            database.child(UID).setValue(list)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            callback.onSuccess(true);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            callback.onError(e.getLocalizedMessage());
+                        }
+                    });
+        }
+    }
+
     /***
      * Realiza o login do usuário usando o Firebase Authentication.
      *
@@ -134,7 +152,6 @@ public class FirebaseNetwork {
 
     public void getDataUser(String UID, GetDataCallback callback) {
         initDatabase("users");
-        Log.d("UID", UID);
         if(database != null){
             database.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -150,13 +167,58 @@ public class FirebaseNetwork {
         }
     }
 
-    public void getWeekMenu(GetDataCallback callback){
+    public void getWeekMenu(GetListCallback callback){
         initDatabase("menu");
         if(database != null){
             database.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    callback.onSuccess(snapshot);
+                    ArrayList<Food> foodsList = new ArrayList<>();
+
+                    for(DataSnapshot item: snapshot.getChildren()){
+                        foodsList.add(new Food(
+                                item.getKey(),
+                                item.child("name").getValue(String.class),
+                                item.child("resumo").getValue(String.class),
+                                item.child("description").getValue(String.class),
+                                item.child("imagem").getValue(String.class)
+                        ));
+                    }
+                    callback.onSuccess(foodsList);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    callback.onError(error.getMessage());
+                }
+            });
+        }
+    }
+
+    public void getUserList(String UID, GetListCallback callback){
+        initDatabase("usersList");
+        if(database != null){
+            database.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    ArrayList<Food> list = new ArrayList<>();
+
+                    for(DataSnapshot item: snapshot.child(UID).getChildren()){
+                        getItemId(item.getValue(String.class), new GetItemCallback() {
+                            @Override
+                            public void onSuccess(Food item) {
+                                list.add(item);
+                                Log.d("FOOD",list.get(list.size() - 1).toString());
+
+                                if(list.size() == 5) callback.onSuccess(list);
+                            }
+
+                            @Override
+                            public void onError(String error) {
+                                if(list.size() == 5) callback.onSuccess(list);
+                            }
+                        });
+                    }
                 }
 
                 @Override
@@ -186,7 +248,7 @@ public class FirebaseNetwork {
         }
     }
 
-    public void uploadImageUser(Uri image, String UID, UploadImageCallback callback){
+    public void uploadImageUser(Uri image, String UID, SaveDataCallback callback){
         initStorage("imageUsers/"+ UID + ".jpg");
         if (storage != null){
             UploadTask task = storage.putFile(image);
@@ -198,6 +260,29 @@ public class FirebaseNetwork {
         }
     }
 
+    private void getItemId(String id, GetItemCallback callback){
+        initDatabase("menu/" + id);
+        if(database != null){
+            database.addListenerForSingleValueEvent(new ValueEventListener() {
+
+                @Override
+                public void onDataChange(@NonNull DataSnapshot item) {
+                        callback.onSuccess(new Food(
+                                item.getKey(),
+                                item.child("name").getValue(String.class),
+                                item.child("resumo").getValue(String.class),
+                                item.child("description").getValue(String.class),
+                                item.child("imagem").getValue(String.class)
+                        ));
+                    }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    callback.onError(error.getMessage());
+                }
+            });
+        }
+    }
 
     /***
      * Realiza o logout do usuário.
@@ -211,5 +296,10 @@ public class FirebaseNetwork {
         } else {
             callback.onSuccess("");
         }
+    }
+
+    private interface GetItemCallback{
+        public void onSuccess(Food item);
+        public void onError(String error);
     }
 }

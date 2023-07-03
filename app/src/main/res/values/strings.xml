@@ -33,4 +33,5 @@
     <string name="error_save_imagem">Falha ao realizar salvamento da imagem!</string>
     <string name="signUp_success">Usuario cadastro com sucesso!</string>
     <string name="signUp_error">Error ao cadastrar novo usuário</string>
+    <string name="_FOOD_TO_DETAIL">FoodToDetail</string>
 </resources>

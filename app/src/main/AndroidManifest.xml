@@ -14,9 +14,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Rangoo"
         tools:targetApi="31">
-
-        <activity android:name=".Activities.WeekMenuActivity"
-            android:exported="false"/>
+        <activity
+            android:name=".Activities.DetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.WeekMenuActivity"
+            android:exported="false" />
         <activity
             android:name=".Activities.HomeListActivity"
             android:exported="false" />
@@ -42,5 +45,4 @@
             </intent-filter>
         </activity>
     </application>
-
 </manifest>

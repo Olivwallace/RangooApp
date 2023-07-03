@@ -1,5 +1,6 @@
 package com.example.rangoo.Activities;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -11,6 +12,13 @@ import com.example.rangoo.Utils.GoTo;
 public class SplashActivity extends AppCompatActivity {
 
     private static final int _DELAY_INTENT = 3500;
+
+    @Override
+    protected void onStart () {
+        super.onStart();
+        SharedPreferences preferences = getSharedPreferences(getString(R.string._COM_RANGO_PREFERENCES), MODE_PRIVATE);
+        GoTo.setUID(preferences.getString("UID", ""));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
