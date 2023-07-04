@@ -1,7 +1,6 @@
 package com.example.rangoo.Activities;
 
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -24,19 +23,11 @@ import java.util.ArrayList;
 
 public class WeekMenuActivity extends AppCompatActivity {
 
-    FirebaseNetwork firebase;
     ActivityWeekMenuBinding binding;
     ListAdapter listAdapter;
-    ArrayList<String> userList;
+    ArrayList<Food> userList;
 
     String UID;
-
-    @Override
-    protected void onStart () {
-        super.onStart();
-        SharedPreferences preferences = getSharedPreferences(getString(R.string._COM_RANGO_PREFERENCES), MODE_PRIVATE);
-        this.UID = preferences.getString("UID", "");
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,44 +35,16 @@ public class WeekMenuActivity extends AppCompatActivity {
         binding = ActivityWeekMenuBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        firebase = new FirebaseNetwork();
-        userList = new ArrayList<>();
+        userList = getIntent().getExtras().getParcelableArrayList(getString(R.string.USER_LIST));
+        UID = getIntent().getExtras().getString(getString(R.string.USER_ID));
 
-        firebase.getWeekMenu(new GetListCallback() {
+        FirebaseNetwork.getWeekMenu(new GetListCallback() {
             @Override
             public void onSuccess(ArrayList<Food> list) {
                 listAdapter = new ListAdapter(list);
                 binding.recyclerView.setAdapter(listAdapter);
 
-                listAdapter.setAdapterListener(new AdapterListener() {
-                    @Override
-                    public void onCardClick(Food item) {
-                        GoTo.detailsView(WeekMenuActivity.this, item);
-                    }
-
-                    @Override
-                    public void onAddClick(Food item) {
-                        if(userList.size() < 5){
-                            userList.add(item.getIdFood());
-                            Snackbar.make(findViewById(android.R.id.content), "Item adicionado a sua lista!", Snackbar.LENGTH_SHORT)
-                                    .setBackgroundTint(getColor(R.color.vegan)).show();
-                        }
-
-                        if(userList.size() == 5){
-                            confirmDialog(new ConfirmCallback() {
-                                @Override
-                                public void onConfirm(boolean status) {
-                                    saveList();
-                                }
-
-                                @Override
-                                public void onError(String status) {
-                                    /* Não necessário nesse contexto*/
-                                }
-                            });
-                        }
-                    }
-                });
+                listAdapterListener();
             }
 
             @Override
@@ -91,8 +54,46 @@ public class WeekMenuActivity extends AppCompatActivity {
         });
     }
 
+    protected void listAdapterListener(){
+        listAdapter.setAdapterListener(new AdapterListener() {
+            @Override
+            public void onCardClick(Food item) {
+                GoTo.detailsView(WeekMenuActivity.this, item);
+            }
+
+            @Override
+            public void onAddClick(Food item) {
+                if(userList.size() < 5){
+                    userList.add(item);
+                    Snackbar.make(findViewById(android.R.id.content), "Item adicionado a sua lista!", Snackbar.LENGTH_SHORT)
+                            .setBackgroundTint(getColor(R.color.vegan)).show();
+                }
+
+                if(userList.size() == 5){
+                    confirmDialog(new ConfirmCallback() {
+                        @Override
+                        public void onConfirm(boolean status) {
+                            saveList();
+                        }
+
+                        @Override
+                        public void onError(String status) {
+                            /* Não necessário nesse contexto*/
+                        }
+                    });
+                }
+            }
+        });
+    }
+
     protected void saveList(){
-        firebase.saveListUser(UID, userList, new SaveDataCallback() {
+        ArrayList<String> lista = new ArrayList<>();
+
+        for (Food i : userList){
+            lista.add(i.getIdFood());
+        }
+
+        FirebaseNetwork.saveListUser(UID, lista, new SaveDataCallback() {
             @Override
             public void onSuccess(boolean success) {
                 GoTo.homeView(WeekMenuActivity.this);

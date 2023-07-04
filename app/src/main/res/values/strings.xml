@@ -34,4 +34,8 @@
     <string name="signUp_success">Usuario cadastro com sucesso!</string>
     <string name="signUp_error">Error ao cadastrar novo usuário</string>
     <string name="_FOOD_TO_DETAIL">FoodToDetail</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="USER_LIST">USER_LIST</string>
+    <string name="USER_ID">USER_ID</string>
 </resources>

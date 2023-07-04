@@ -26,8 +26,6 @@ import java.util.TimeZone;
 
 public class SignUpActivity extends AppCompatActivity {
 
-    private FirebaseNetwork firebase;
-
     private ActivitySignUpBinding binding;
 
     private String name;
@@ -42,8 +40,6 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivitySignUpBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-        firebase = new FirebaseNetwork();
 
         binding.btnConclude.setEnabled(false);
 
@@ -77,7 +73,6 @@ public class SignUpActivity extends AppCompatActivity {
         binding.btnConclude.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("HABILITADO: ", "Botao Habilitado para uso");
                 signUpUser();
             }
         });
@@ -89,7 +84,7 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     protected void signUpUser(){
-        firebase.signUpUser(transformUserForm(), new AuthCallback() {
+        FirebaseNetwork.signUpUser(transformUserForm(), new AuthCallback() {
             @Override
             public void onSuccess(String UID) {
                 Toast.makeText(getApplicationContext(), R.string.signUp_success, Toast.LENGTH_SHORT).show();

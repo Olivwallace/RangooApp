@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.rangoo.R;
 import com.example.rangoo.Utils.GoTo;
+import com.example.rangoo.Utils.SharedPreferecesSingleton;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -28,9 +29,11 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                //GoTo.signInView(SplashActivity.this);
-                //GoTo.profileView(SplashActivity.this);
-                GoTo.homeView(SplashActivity.this);
+                if(SharedPreferecesSingleton.getInstance(getBaseContext()).getLoggedIn()){
+                    GoTo.homeView(SplashActivity.this);
+                } else {
+                    GoTo.signInView(SplashActivity.this);
+                }
             }
         }, _DELAY_INTENT);
 

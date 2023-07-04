@@ -2,25 +2,25 @@ package com.example.rangoo.Activities;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rangoo.Adapter.HomeAdapter;
 import com.example.rangoo.Interfaces.AdapterListener;
 import com.example.rangoo.Interfaces.ConfirmCallback;
-import com.example.rangoo.Interfaces.GetListCallback;
 import com.example.rangoo.Model.Food;
 import com.example.rangoo.Network.FirebaseNetwork;
 import com.example.rangoo.R;
 import com.example.rangoo.Utils.GoTo;
 import com.example.rangoo.databinding.ActivityHomeListBinding;
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 
@@ -28,8 +28,7 @@ public class HomeListActivity extends AppCompatActivity {
 
     ActivityHomeListBinding binding;
     HomeAdapter homeAdapter;
-    FirebaseNetwork firebase;
-
+    ArrayList<Food> userList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,48 +36,69 @@ public class HomeListActivity extends AppCompatActivity {
         binding = ActivityHomeListBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        firebase = new FirebaseNetwork();
+        userList = getIntent().getExtras().getParcelableArrayList(getString(R.string.USER_LIST));
 
-        firebase.getUserList(getIntent().getStringExtra("UID"), new GetListCallback() {
-            @Override
-            public void onSuccess(ArrayList<Food> list) {
-
-                homeAdapter = new HomeAdapter(list);
-                binding.recyclerView.setAdapter(homeAdapter);
-
-                homeAdapter.setAdapterListener(new AdapterListener() {
-                    @Override
-                    public void onCardClick(Food item) {
-                        GoTo.detailsView(HomeListActivity.this, item);
-                    }
-
-                    @Override
-                    public void onAddClick(Food item) { /* Não implemetado nesse contexto. */  }
-                });
-            }
-
-            @Override
-            public void onError(String error) {
-
-            }
-        });
-
+        homeAdapter = new HomeAdapter(userList);
+        binding.recyclerView.setAdapter(homeAdapter);
 
         ItemTouchHelper helper = new ItemTouchHelper(new HomeListTouchHandler(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT));
         helper.attachToRecyclerView(binding.recyclerView);
 
-        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+        adapterListener();
+        buttonsListener();
+        drawerNavigation();
 
+    }
+
+    protected void adapterListener(){
+        homeAdapter.setAdapterListener(new AdapterListener() {
+            @Override
+            public void onCardClick(Food item) {
+                GoTo.detailsView(HomeListActivity.this, item);
+            }
+
+            @Override
+            public void onAddClick(Food item) {
+                // Não aplicavel nesse contexto.
+            }
+        });
+    }
+
+    protected void buttonsListener(){
         binding.btnOpenDrawer.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) { drawerLayout.openDrawer(GravityCompat.START);
+            public void onClick(View v) {
+                binding.drawerLayout.openDrawer(GravityCompat.START);
             }
         });
 
         binding.btnAddMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                GoTo.weekMenu(HomeListActivity.this);
+                GoTo.weekMenu(HomeListActivity.this, userList);
+            }
+        });
+    }
+
+    protected void drawerNavigation(){
+        binding.navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+
+                switch (id){
+                    case R.id.item_profile:
+                        GoTo.profileView(HomeListActivity.this);
+                        break;
+                    case R.id.nav_exit:
+                        FirebaseNetwork.signOut();
+                        GoTo.signInView(HomeListActivity.this);
+                        break;
+                    default:
+                }
+
+                binding.drawerLayout.close();
+                return false;
             }
         });
     }
@@ -109,6 +129,9 @@ public class HomeListActivity extends AppCompatActivity {
         dialog.create().show();
     }
 
+    /***
+     * Classe auxiliar para auxiliar nos eventos em lista.
+     */
     private class HomeListTouchHandler extends ItemTouchHelper.SimpleCallback {
 
         public HomeListTouchHandler(int dragDirs, int swipeDirs) {
