@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:backgroundTint="@color/baron"
     android:layout_marginHorizontal="15dp"
-    android:layout_marginVertical="9dp"
+    android:layout_marginVertical="5dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardCornerRadius="10dp">
@@ -33,7 +33,7 @@
 
             <TextView
                 android:id="@+id/cardHome_name"
-                android:text="Franguinho"
+                android:text=""
                 android:textStyle="bold"
                 android:textColor="@color/black"
                 android:textSize="18dp"
@@ -44,7 +44,7 @@
             <TextView
                 android:id="@+id/cardHome_resume"
                 android:textColor="@color/dark"
-                android:text="Franguinho sfafasfasfafafadfdsfadfadfafagsdgcvsdfsdffasdafasfasfasfasfasfadasdadasdasdasdasddasdasdassdasdas"
+                android:text=""
                 android:textSize="15dp"
                 android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"

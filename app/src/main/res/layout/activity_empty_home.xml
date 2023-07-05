@@ -39,14 +39,13 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
         android:orientation="vertical"
         tools:context=".Activities.EmptyHomeActivity">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Aparentemente você está sem fome essa semana!"
+            android:text="@string/sem_fome_essa_semana"
             android:textSize="25dp"
             android:layout_marginTop="80dp"
             android:padding="10dp"
@@ -61,10 +60,10 @@
             android:layout_marginTop="70dp"/>
 
         <Button
-            android:id="@+id/btn_login"
+            android:id="@+id/btn_weekmenu"
             android:layout_width="250dp"
             android:layout_height="57dp"
-            android:text="Deixe-me ver as opções"
+            android:text="@string/deixe_me_ver_opcoes"
             android:textAllCaps="false"
             android:layout_gravity="center"
             android:layout_marginTop="80dp"

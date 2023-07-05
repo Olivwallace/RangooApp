@@ -8,22 +8,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.example.rangoo.Network.FirebaseNetwork;
 import com.example.rangoo.R;
+import com.example.rangoo.Utils.GoTo;
 import com.example.rangoo.databinding.ActivityEmptyHomeBinding;
+
+import java.util.ArrayList;
 
 public class EmptyHomeActivity extends AppCompatActivity {
 
     ActivityEmptyHomeBinding binding;
-    FirebaseNetwork firebase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityEmptyHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-        firebase = new FirebaseNetwork();
 
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
 
@@ -33,6 +32,12 @@ public class EmptyHomeActivity extends AppCompatActivity {
             }
         });
 
+        binding.btnWeekmenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                GoTo.weekMenu(EmptyHomeActivity.this, new ArrayList<>());
+            }
+        });
     }
 
     protected void goToPerfilView(){
@@ -41,9 +46,6 @@ public class EmptyHomeActivity extends AppCompatActivity {
         finish();
     }
 
-    protected void logOut(){
-        //firebase.signOut();
-    }
 
 
 }

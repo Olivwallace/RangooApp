@@ -2,7 +2,6 @@ package com.example.rangoo.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -16,9 +15,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.rangoo.Interfaces.AuthCallback;
-import com.example.rangoo.Interfaces.GetUserCallback;
-import com.example.rangoo.Interfaces.UploadImageCallback;
+import com.example.rangoo.Interfaces.GetDataCallback;
+import com.example.rangoo.Interfaces.SaveDataCallback;
 import com.example.rangoo.Interfaces.UriImageCallback;
 import com.example.rangoo.Network.FirebaseNetwork;
 import com.example.rangoo.R;
@@ -30,15 +28,7 @@ import com.google.firebase.database.DataSnapshot;
 public class ProfileActivity extends AppCompatActivity {
 
     private ActivityProfileBinding binding;
-    private FirebaseNetwork firebase;
-    private SharedPreferences preferences;
-
-    @Override
-    protected void onStart () {
-        super.onStart();
-        preferences = getSharedPreferences(getString(R.string._COM_RANGO_PREFERENCES), MODE_PRIVATE);
-        getDataUser(preferences.getString("UID", ""));
-    }
+    private String UID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +36,8 @@ public class ProfileActivity extends AppCompatActivity {
         binding = ActivityProfileBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        firebase = new FirebaseNetwork();
+        UID = getIntent().getExtras().getString(getString(R.string.USER_ID));
+        getDataUser(UID);
 
         binding.ibtnImageUser.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,7 +49,7 @@ public class ProfileActivity extends AppCompatActivity {
         binding.btnRecoverPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(findViewById(android.R.id.content), "Solicitação de redefinição de senha enviada para seu email.", Snackbar.LENGTH_SHORT)
+                Snackbar.make(findViewById(android.R.id.content), R.string.solicitacao_redefinicao_enviada, Snackbar.LENGTH_SHORT)
                         .setBackgroundTint(getColor(R.color.pumpkin)).show();
             }
         });
@@ -66,31 +57,20 @@ public class ProfileActivity extends AppCompatActivity {
         binding.btnLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                firebase.signOut(new AuthCallback() {
-                    @Override
-                    public void onSuccess(String id) {
-                        GoTo.signInView(ProfileActivity.this);
-                    }
-
-                    @Override
-                    public void onError(String error) {
-                        Snackbar.make(findViewById(android.R.id.content), "Error ao efetuar signOut, tente novamente", Snackbar.LENGTH_SHORT)
-                                .setBackgroundTint(getColor(R.color.baron)).show();
-                    }
-                });
-
+                FirebaseNetwork.signOut();
+                GoTo.signInView(ProfileActivity.this);
             }
         });
     }
 
     protected void getDataUser(String UID){
-        firebase.getDataUser(UID, new GetUserCallback() {
+        FirebaseNetwork.getDataUser(UID, new GetDataCallback() {
 
             @Override
             public void onSuccess(DataSnapshot data) {
 
                 // Carrega imagem do perfil do usuário
-                firebase.getUriImageUser(UID, new UriImageCallback() {
+                FirebaseNetwork.getUriImageUser(UID, new UriImageCallback() {
                     @Override
                     public void onSuccess(Uri uri) {
                         Glide.with(ProfileActivity.this)
@@ -129,17 +109,17 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     protected void uploadImage(Uri image) {
-        firebase.uploadImageUser(image, preferences.getString("UID", ""), new UploadImageCallback() {
+        FirebaseNetwork.uploadImageUser(image, UID, new SaveDataCallback() {
             @Override
             public void onSuccess(boolean success) {
-                Snackbar.make(findViewById(android.R.id.content), "Imagem alterada com sucesso!", Snackbar.LENGTH_SHORT)
+                Snackbar.make(findViewById(android.R.id.content), R.string.imagem_alterada, Snackbar.LENGTH_SHORT)
                         .setBackgroundTint(getColor(R.color.vegan)).show();
             }
 
             @Override
             public void onError(String error) {
                 Log.e("FALHA UPLOAD IMAGE: ", error);
-                Snackbar.make(findViewById(android.R.id.content), "Falha ao realizar salvamento da imagem!", Snackbar.LENGTH_SHORT)
+                Snackbar.make(findViewById(android.R.id.content), R.string.error_update_imagem, Snackbar.LENGTH_SHORT)
                         .setBackgroundTint(getColor(R.color.baron)).show();
             }
         });
@@ -154,7 +134,7 @@ public class ProfileActivity extends AppCompatActivity {
                     uploadImage(result.getData().getData());
                 }else{
                     Log.d("ERRO: ", "" + result.getResultCode());
-                    Snackbar.make(findViewById(android.R.id.content), "Falha ao realizar salvamento da imagem!", Snackbar.LENGTH_SHORT)
+                    Snackbar.make(findViewById(android.R.id.content), R.string.error_save_imagem, Snackbar.LENGTH_SHORT)
                             .setBackgroundTint(getColor(R.color.baron)).show();
                 }
             }

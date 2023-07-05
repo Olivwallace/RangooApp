@@ -1,7 +1,6 @@
 package com.example.rangoo.Activities;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,6 +14,7 @@ import com.example.rangoo.Interfaces.AuthCallback;
 import com.example.rangoo.Model.User;
 import com.example.rangoo.Network.FirebaseNetwork;
 import com.example.rangoo.R;
+import com.example.rangoo.Utils.GoTo;
 import com.example.rangoo.Utils.StringUtils;
 import com.example.rangoo.databinding.ActivitySignUpBinding;
 import com.google.android.material.datepicker.MaterialDatePicker;
@@ -25,8 +25,6 @@ import java.util.Date;
 import java.util.TimeZone;
 
 public class SignUpActivity extends AppCompatActivity {
-
-    private FirebaseNetwork firebase;
 
     private ActivitySignUpBinding binding;
 
@@ -42,8 +40,6 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivitySignUpBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-        firebase = new FirebaseNetwork();
 
         binding.btnConclude.setEnabled(false);
 
@@ -77,7 +73,6 @@ public class SignUpActivity extends AppCompatActivity {
         binding.btnConclude.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("HABILITADO: ", "Botao Habilitado para uso");
                 signUpUser();
             }
         });
@@ -89,24 +84,19 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     protected void signUpUser(){
-        firebase.signUpUser(transformUserForm(), new AuthCallback() {
+        FirebaseNetwork.signUpUser(transformUserForm(), new AuthCallback() {
             @Override
             public void onSuccess(String UID) {
-                Toast.makeText(getApplicationContext(), "Usuario cadastro com sucesso!", Toast.LENGTH_SHORT).show();
-                goToSignInView();
+                Toast.makeText(getApplicationContext(), R.string.signUp_success, Toast.LENGTH_SHORT).show();
+                GoTo.signInView(SignUpActivity.this);
             }
 
             @Override
             public void onError(String error) {
                 Log.e("ERRO CADASTRO: ", error);
-                Toast.makeText(getApplicationContext(), "Error ao cadastrar novo usuário", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.signUp_error, Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    protected void goToSignInView(){
-        Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
-        startActivity(intent);
     }
 
     protected TextWatcher textWatcher = new TextWatcher() {

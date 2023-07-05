@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="10dp"
-    tools:context=".Activities.MainActivity"
+    tools:context=".Activities.LoginActivity"
     android:orientation="vertical">
 
     <ImageView
@@ -20,16 +20,19 @@
         android:id="@+id/signin_login"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:hint="E-mail"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress"
         android:paddingLeft="10dp"
         android:background="@drawable/edittext_border"
         android:layout_margin="5dp"
         />
+
     <EditText
         android:id="@+id/signin_password"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:hint="Senha"
+        android:hint="@string/senha"
+        android:inputType="textPassword"
         android:paddingLeft="10dp"
         android:background="@drawable/edittext_border"
         android:layout_margin="5dp"
@@ -43,7 +46,7 @@
         android:layout_gravity="right"
         android:backgroundTint="@color/transparent"
         android:outlineProvider="none"
-        android:text="Redefinir senha"
+        android:text="@string/redefinir_senha"
         android:padding="-5dp"
         android:textColor="@color/gray"
         android:textAllCaps="false"/>
@@ -52,7 +55,7 @@
         android:id="@+id/btn_login"
         android:layout_width="200dp"
         android:layout_height="57dp"
-        android:text="Entrar"
+        android:text="@string/entrar"
         android:textAllCaps="false"
         android:layout_gravity="center"
         android:layout_marginTop="30dp"
@@ -71,7 +74,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ou"
+        android:text="@string/ou"
         android:textColor="@color/black"
         android:layout_gravity="center"
         android:layout_marginTop="15dp"/>
@@ -83,7 +86,7 @@
         android:layout_gravity="center"
         android:backgroundTint="@color/transparent"
         android:outlineProvider="none"
-        android:text="Cadastre-se"
+        android:text="@string/cadastre_se"
         android:textColor="@color/gray"
         android:textAllCaps="false"/>
 

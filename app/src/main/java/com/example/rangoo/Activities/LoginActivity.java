@@ -2,7 +2,6 @@ package com.example.rangoo.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,13 +17,13 @@ import com.example.rangoo.Network.FirebaseNetwork;
 import com.example.rangoo.Network.GoogleNetwork;
 import com.example.rangoo.R;
 import com.example.rangoo.Utils.GoTo;
+import com.example.rangoo.Utils.SharedPreferecesSingleton;
 import com.example.rangoo.databinding.ActivityLoginBinding;
 import com.google.android.material.snackbar.Snackbar;
 
-public class MainActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     private  GoogleNetwork google;
-    private FirebaseNetwork firebase;
 
     private ActivityLoginBinding binding;
 
@@ -35,12 +34,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         google = new GoogleNetwork();
-        firebase = new FirebaseNetwork();
 
         binding.btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, SignUpActivity.class);
+                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
                 startActivity(intent);
             }
         });
@@ -48,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         binding.resetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(findViewById(android.R.id.content), "Solicitação de redefinição de senha enviada para seu email.", Snackbar.LENGTH_SHORT)
+                Snackbar.make(findViewById(android.R.id.content), R.string.solicitacao_redefinicao_enviada, Snackbar.LENGTH_SHORT)
                         .setBackgroundTint(getColor(R.color.pumpkin)).show();
             }
         });
@@ -78,14 +76,14 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onError(String error) {
-                Log.d("FALHA LOGIN: ", error);
-                errorMensage("Usuario Google Inválido");
+                Log.e("FALHA LOGIN: ", error);
+                errorMessage(getString(R.string.user_google_error));
             }
         });
     }
 
     protected void signInWithEmailPass(String email, String senha){
-        firebase.signIn(new LoginData(email, senha), new AuthCallback() {
+        FirebaseNetwork.signIn(new LoginData(email, senha), new AuthCallback() {
             @Override
             public void onSuccess(String UID) {
                 goToHomeView(UID);
@@ -93,30 +91,23 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onError(String error) {
-                Log.d("FALHA LOGIN: ", error);
-                errorMensage("Usuário Inválido: Verifique os campos e tente novamente!");
+                Log.e("FALHA LOGIN: ", error);
+                errorMessage(getString(R.string.user_login_error));
             }
         });
     }
 
     protected void goToHomeView(String UID){
-        Snackbar.make(findViewById(android.R.id.content), "Usuario Autenticado com Sucesso", Snackbar.LENGTH_SHORT)
+        Snackbar.make(findViewById(android.R.id.content), R.string.user_login_success, Snackbar.LENGTH_SHORT)
                 .setBackgroundTint(getColor(R.color.vegan)).show();
-        saveUID(UID);
-        GoTo.homeView(MainActivity.this);
+
+        SharedPreferecesSingleton.getInstance(getApplicationContext()).setUserID(UID);
+        GoTo.homeView(LoginActivity.this);
     }
 
-    protected void errorMensage(String msg){
+    protected void errorMessage(String msg){
         Snackbar.make(findViewById(android.R.id.content), msg, Snackbar.LENGTH_SHORT)
                 .setBackgroundTint(getColor(R.color.baron)).show();
-    }
-
-    protected void saveUID(String UID){
-        SharedPreferences preferences = getSharedPreferences(getString(R.string._COM_RANGO_PREFERENCES), MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("UID", UID);
-        editor.putBoolean("isLoggedIn", true);
-        editor.apply();
     }
 
     //----------------------- Activity Result
@@ -127,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
                     google.handleResultSignIn(intent);
                 }else{
                     Log.d("ERRO: ", "" + result.getResultCode());
-                    Toast.makeText(getApplicationContext(), "Erro ao tentar conectar com Google!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.error_login_google, Toast.LENGTH_SHORT).show();
                 }
             }
     );

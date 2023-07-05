@@ -31,6 +31,7 @@ public class HomeViewHolder extends RecyclerView.ViewHolder {
                 .load(food.getImageUrl())
                 .override(150, 150)
                 .centerCrop()
+                .error(R.drawable.perfil_image_user)
                 .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL))
                 .into(image);
 

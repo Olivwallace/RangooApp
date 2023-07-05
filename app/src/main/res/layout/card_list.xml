@@ -27,7 +27,7 @@
 
             <TextView
                 android:id="@+id/cardList_name"
-                android:text="Franguinho"
+                android:text=""
                 android:textStyle="bold"
                 android:elegantTextHeight="true"
                 android:textColor="@color/dark"
@@ -51,7 +51,7 @@
                 android:id="@+id/cardList_resume"
                 android:textColor="@color/dark"
                 android:layout_below="@+id/cardList_name"
-                android:text="Franguinho sfafasfasfafafadfdsfadfadfafagsdgcvsdfsdffasdafasfasfasfasfasfadasdadasdasdasdasddasdasdassdasdas"
+                android:text=""
                 android:textSize="15dp"
                 android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"
