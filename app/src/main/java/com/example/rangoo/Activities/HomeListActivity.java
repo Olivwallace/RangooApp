@@ -90,6 +90,12 @@ public class HomeListActivity extends AppCompatActivity {
                     case R.id.item_profile:
                         GoTo.profileView(HomeListActivity.this);
                         break;
+                    case R.id.nav_home:
+                        recreate();
+                        break;
+                    case R.id.nav_about:
+                        GoTo.aboutView(HomeListActivity.this);
+                        break;
                     case R.id.nav_exit:
                         FirebaseNetwork.signOut();
                         GoTo.signInView(HomeListActivity.this);

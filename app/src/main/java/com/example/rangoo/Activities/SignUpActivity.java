@@ -76,6 +76,13 @@ public class SignUpActivity extends AppCompatActivity {
                 signUpUser();
             }
         });
+
+        binding.btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
     protected User transformUserForm(){

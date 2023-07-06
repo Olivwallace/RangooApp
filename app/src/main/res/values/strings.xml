@@ -38,4 +38,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="USER_LIST">USER_LIST</string>
     <string name="USER_ID">USER_ID</string>
+    <string name="sua_lista_de_pratos">Sua lista de Pratos</string>
+    <string name="opc_semana">Opções da Semana</string>
 </resources>

@@ -18,5 +18,6 @@
             android:id="@+id/nav_exit"
             android:icon="@drawable/exit"
             android:title="Sair" />
+
     </group>
 </menu>

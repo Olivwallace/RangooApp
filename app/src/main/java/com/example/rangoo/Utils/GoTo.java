@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
 
+import com.example.rangoo.Activities.AboutActivity;
 import com.example.rangoo.Activities.DetailsActivity;
 import com.example.rangoo.Activities.EmptyHomeActivity;
 import com.example.rangoo.Activities.HomeListActivity;
@@ -80,6 +81,10 @@ public class GoTo {
     public static void profileView(Activity activity){
         setUID(SharedPreferecesSingleton.getInstance(activity.getApplicationContext()).getUserID());
         activity.startActivity(new Intent(activity, ProfileActivity.class).putExtra(activity.getString(R.string.USER_ID), UID));
+    }
+
+    public static void aboutView(Activity activity){
+        activity.startActivity(new Intent(activity, AboutActivity.class));
     }
 
 }

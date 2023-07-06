@@ -1,6 +1,7 @@
 package com.example.rangoo.Activities;
 
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -23,6 +24,13 @@ public class DetailsActivity extends AppCompatActivity {
 
         Food food = getIntent().getExtras().getParcelable(getString(R.string._FOOD_TO_DETAIL));
         detailFood(food);
+
+        binding.btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
     protected  void detailFood(Food food){

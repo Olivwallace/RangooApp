@@ -61,6 +61,13 @@ public class ProfileActivity extends AppCompatActivity {
                 GoTo.signInView(ProfileActivity.this);
             }
         });
+
+        binding.btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
     protected void getDataUser(String UID){

@@ -6,10 +6,11 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
+    style="@style/background"
     tools:context=".Activities.SplashActivity">
 
     <ImageView
-        android:src="@drawable/rangoologo"
+        style="@style/logo_image"
         android:layout_gravity="center"
         android:layout_width="350dp"
         android:layout_height="350dp"/>

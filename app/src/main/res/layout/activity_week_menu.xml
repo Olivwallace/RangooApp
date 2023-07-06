@@ -18,41 +18,37 @@
             android:visibility="visible">
 
             <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:background="@color/ice"
+                style="@style/toolbar"
                 android:orientation="horizontal"
                 android:visibility="visible">
 
                 <ImageButton
                     android:layout_marginLeft="15dp"
                     android:id="@+id/btn_open_drawer"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@color/transparent"
+                    style="@style/menu_icon"
                     android:layout_centerVertical="true"
                     android:onClick="openDrawer"
-                    android:background="@drawable/menu"/>
+                    />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_centerHorizontal="true"
-                    android:text="Opções da Semana"
-                    android:textSize="20dp"
-                    android:textStyle="bold"/>
+                    android:text="@string/opc_semana"
+                    style="@style/text_toolbar"
+                    />
 
             </RelativeLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
-                android:background="@color/soft20"
+                style="@style/modal_card"
                 android:layout_gravity="center"
                 android:layout_width="390dp"
                 android:layout_height="match_parent"
-                android:layout_marginTop="15dp"
-                android:paddingTop="20dp"
+                android:layout_marginVertical="15dp"
+                android:paddingVertical="10dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/card_home"/>
         </LinearLayout>

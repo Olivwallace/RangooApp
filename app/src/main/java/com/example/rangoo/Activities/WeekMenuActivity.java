@@ -3,9 +3,13 @@ package com.example.rangoo.Activities;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
 
 import com.example.rangoo.Adapter.ListAdapter;
 import com.example.rangoo.Interfaces.AdapterListener;
@@ -17,6 +21,7 @@ import com.example.rangoo.Network.FirebaseNetwork;
 import com.example.rangoo.R;
 import com.example.rangoo.Utils.GoTo;
 import com.example.rangoo.databinding.ActivityWeekMenuBinding;
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -45,6 +50,8 @@ public class WeekMenuActivity extends AppCompatActivity {
                 binding.recyclerView.setAdapter(listAdapter);
 
                 listAdapterListener();
+                buttonsListener();
+                drawerNavigation();
             }
 
             @Override
@@ -82,6 +89,45 @@ public class WeekMenuActivity extends AppCompatActivity {
                         }
                     });
                 }
+            }
+        });
+    }
+
+    protected void buttonsListener(){
+        binding.btnOpenDrawer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.drawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
+
+    }
+
+    protected void drawerNavigation(){
+        binding.navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+
+                switch (id){
+                    case R.id.item_profile:
+                        GoTo.profileView(WeekMenuActivity.this);
+                        break;
+                    case R.id.nav_home:
+                        GoTo.homeView(WeekMenuActivity.this);
+                        break;
+                    case R.id.nav_about:
+                        GoTo.aboutView(WeekMenuActivity.this);
+                        break;
+                    case R.id.nav_exit:
+                        FirebaseNetwork.signOut();
+                        GoTo.signInView(WeekMenuActivity.this);
+                        break;
+                    default:
+                }
+
+                binding.drawerLayout.close();
+                return false;
             }
         });
     }

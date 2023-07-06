@@ -4,25 +4,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="10dp"
+    style="@style/background"
     android:orientation="vertical"
     tools:context=".Activities.SignUpActivity">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/lucasrangoo"
-        android:layout_gravity="center"/>
+    <RelativeLayout
+        style="@style/toolbar"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+        <ImageButton
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:id="@+id/btn_back"
+            style="@style/back_icon"/>
+
+        <ImageView
+            style="@style/lucas_image"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
+    </RelativeLayout>
+
 
     <TextView
+        style="@style/text_fix"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/cadastre_se"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginVertical="35dp"
         android:textSize="25dp"
-        android:textColor="@color/black"/>
+      />
 
     <EditText
         android:id="@+id/txt_name"
@@ -93,13 +107,11 @@
 
     <Button
         android:id="@+id/btn_conclude"
-        android:layout_width="200dp"
-        android:layout_height="57dp"
+        style="@style/button_style"
         android:text="@string/concluir"
         android:textAllCaps="false"
         android:layout_gravity="center"
         android:layout_marginTop="30dp"
-        android:textColor="@color/white"
-        android:backgroundTint="@color/brave"/>
+        />
 
 </LinearLayout>

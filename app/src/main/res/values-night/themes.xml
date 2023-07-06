@@ -6,11 +6,89 @@
         <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondary">@color/baron</item>
         <item name="colorSecondaryVariant">@color/teal_200</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/ice</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="background">
+        <item name="android:background">@color/dark_background_color</item>
+    </style>
+
+    <style name="logo_image">
+        <item name="android:src">@drawable/rangoo_dark</item>
+    </style>
+
+    <style name="lucas_image">
+        <item name="android:src">@drawable/rangoo_icon_white</item>
+    </style>
+
+    <style name="text_fix">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="back_icon">
+        <item name="android:background">@drawable/back_white</item>
+        <item name="android:layout_width">30dp</item>
+        <item name="android:layout_height">30dp</item>
+        <item name="android:layout_marginLeft">15dp</item>
+    </style>
+
+    <style name="menu_icon">
+        <item name="android:background">@drawable/menu_white</item>
+        <item name="android:layout_width">30dp</item>
+        <item name="android:layout_height">30dp</item>
+        <item name="android:layout_marginLeft">15dp</item>
+    </style>
+
+    <style name="home_icon">
+        <item name="android:background">@drawable/home_white</item>
+    </style>
+
+    <style name="profile_icon">
+        <item name="android:background">@drawable/profile_white</item>
+    </style>
+
+    <style name="info_icon">
+        <item name="android:background">@drawable/info_white</item>
+    </style>
+
+    <style name="exit_icon">
+        <item name="android:background">@drawable/exit_white</item>
+    </style>
+
+    <style name="icon_fix">
+        <item name="android:background">@color/white</item>
+    </style>
+
+    <style name="toolbar">
+        <item name="android:background">@color/dark_toolbar_color</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">70dp</item>
+    </style>
+
+    <style name="text_toolbar">
+        <item name="android:textSize">20dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="modal_card">
+        <item name="android:background">@drawable/card_border_radius_dark</item>
+    </style>
+
+    <style name="button_style">
+        <item name="android:layout_width">250dp</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="backgroundTint">@color/baron</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="seekBar">
+        <item name="android:src">@drawable/lua</item>
+    </style>
+
 </resources>

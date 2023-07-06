@@ -4,20 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
     android:orientation="vertical"
     tools:context=".Activities.ProfileActivity">
 
+    <RelativeLayout
+        style="@style/toolbar"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+        <ImageButton
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:id="@+id/btn_back"
+            style="@style/back_icon"/>
+
+        <ImageView
+            style="@style/lucas_image"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
+    </RelativeLayout>
+
     <LinearLayout
-        android:background="@drawable/card_border_radius"
-        android:paddingTop="25dp"
-        android:paddingBottom="25dp"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
+        style="@style/modal_card"
+        android:paddingHorizontal="25dp"
+        android:paddingVertical="20dp"
         android:orientation="vertical"
-        android:layout_margin="35dp"
+        android:layout_margin="25dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
 
         <ImageButton
             android:id="@+id/ibtn_imageUser"
@@ -110,7 +127,8 @@
         android:textColor="@color/gray"
         android:background="@color/transparent"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
 
     <Button
         android:id="@+id/btn_logOut"
@@ -118,6 +136,7 @@
         android:textColor="@color/baron"
         android:background="@color/transparent"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
 
 </LinearLayout>
