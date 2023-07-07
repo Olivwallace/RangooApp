@@ -62,7 +62,7 @@
             android:textSize="15dp"
             android:textAlignment="inherit"
             android:justificationMode="inter_word"
-            android:text="Produzido por wallace e Gabi"
+            android:text="Produzido por \nGabriella Aguiar\nJeferson Constantino\nWallace Oliveira\n\n\n\n                       Belo Horizonte, 2023"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </LinearLayout>

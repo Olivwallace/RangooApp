@@ -15,6 +15,9 @@
         android:theme="@style/Theme.Rangoo"
         tools:targetApi="31">
         <activity
+            android:name=".Activities.resert_pass"
+            android:exported="false" />
+        <activity
             android:name=".Activities.AboutActivity"
             android:exported="false" />
         <activity

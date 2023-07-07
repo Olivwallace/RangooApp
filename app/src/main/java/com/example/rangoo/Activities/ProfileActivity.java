@@ -7,10 +7,12 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -21,6 +23,7 @@ import com.example.rangoo.Interfaces.UriImageCallback;
 import com.example.rangoo.Network.FirebaseNetwork;
 import com.example.rangoo.R;
 import com.example.rangoo.Utils.GoTo;
+import com.example.rangoo.Utils.SharedPreferecesSingleton;
 import com.example.rangoo.databinding.ActivityProfileBinding;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
@@ -34,6 +37,13 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityProfileBinding.inflate(getLayoutInflater());
+
+        if(SharedPreferecesSingleton.getInstance(getApplicationContext()).getDarkMode()){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+
         setContentView(binding.getRoot());
 
         UID = getIntent().getExtras().getString(getString(R.string.USER_ID));
@@ -66,6 +76,15 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finish();
+            }
+        });
+
+        binding.btnRecoverPass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TextView email = findViewById(R.id.emailUser);
+                Log.d("VALOR", email.getText().toString());
+                FirebaseNetwork.recuperaSenha(email.getText().toString());
             }
         });
     }

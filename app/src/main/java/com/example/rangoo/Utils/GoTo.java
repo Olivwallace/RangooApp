@@ -48,6 +48,7 @@ public class GoTo {
                     activity.startActivity(new Intent(activity, EmptyHomeActivity.class).putExtra("USER_ID", UID));
                     activity.finish();
                     Log.e("USER_LIST_ERROR", error);
+                    activity.finish();
                 }}
         );
     }

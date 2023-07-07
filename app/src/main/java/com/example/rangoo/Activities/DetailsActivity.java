@@ -4,12 +4,14 @@ import android.os.Bundle;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.rangoo.Model.Food;
 import com.example.rangoo.R;
+import com.example.rangoo.Utils.SharedPreferecesSingleton;
 import com.example.rangoo.databinding.ActivityDetailsBinding;
 
 public class DetailsActivity extends AppCompatActivity {
@@ -20,6 +22,13 @@ public class DetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityDetailsBinding.inflate(getLayoutInflater());
+
+        if(SharedPreferecesSingleton.getInstance(getApplicationContext()).getDarkMode()){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+
         setContentView(binding.getRoot());
 
         Food food = getIntent().getExtras().getParcelable(getString(R.string._FOOD_TO_DETAIL));

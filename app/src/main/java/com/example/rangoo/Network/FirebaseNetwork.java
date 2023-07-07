@@ -27,6 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.google.gson.internal.bind.JsonAdapterAnnotationTypeAdapterFactory;
 
 import java.util.ArrayList;
 
@@ -36,18 +37,11 @@ public class FirebaseNetwork {
     private static DatabaseReference database;
     private static StorageReference storage;
 
-    /***
-     * Inicializa a instância do FirebaseAuth.
-     */
+
     private static void initAuth() {
         auth = FirebaseAuth.getInstance();
     }
 
-    /***
-     * Inicializa a instância do DatabaseReference com o caminho especificado.
-     *
-     * @param data O caminho para o nó no banco de dados do Firebase.
-     */
     private static void initDatabase(String data) {
         database = FirebaseDatabase.getInstance().getReference().child(data);
     }
@@ -56,17 +50,11 @@ public class FirebaseNetwork {
         storage = FirebaseStorage.getInstance().getReference().child(caminho);
     }
 
-    /***
-     * Registra um novo usuário no Firebase Authentication e salva os dados do usuário no banco de dados.
-     *
-     * @param user     O objeto User contendo os dados do usuário.
-     * @param callback O AuthCallback para retornar o resultado da operação.
-     */
     public static void signUpUser(User user, AuthCallback callback) {
         if (user != null) {
             initAuth();
 
-            auth.createUserWithEmailAndPassword(user.getLoginData().getEmail(), user.getLoginData().getPassword())
+            auth.createUserWithEmailAndPassword(user.getEmail(), user.getPassword())
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
@@ -83,13 +71,6 @@ public class FirebaseNetwork {
         }
     }
 
-    /***
-     * Salva os dados do usuário no banco de dados do Firebase.
-     *
-     * @param UID      O UID do usuário atualmente autenticado.
-     * @param user     O objeto User contendo os dados do usuário.
-     * @param callback O AuthCallback para retornar o resultado da operação.
-     */
     public static void saveDataUser(String UID, User user, AuthCallback callback) {
         initDatabase("users");
         if (database != null) {
@@ -126,12 +107,6 @@ public class FirebaseNetwork {
         }
     }
 
-    /***
-     * Realiza o login do usuário usando o Firebase Authentication.
-     *
-     * @param loginData O objeto LoginData contendo as credenciais de login do usuário.
-     * @param callback  O AuthCallback para retornar o resultado da operação.
-     */
     public static void signIn(LoginData loginData, AuthCallback callback) {
         initAuth();
         auth.signInWithEmailAndPassword(loginData.getEmail(), loginData.getPassword())
@@ -210,12 +185,12 @@ public class FirebaseNetwork {
                                     list.add(item);
                                     Log.d("FOOD", list.get(list.size() - 1).toString());
 
-                                    if (list.size() == 5) callback.onSuccess(list);
+                                    callback.onSuccess(list);
                                 }
 
                                 @Override
                                 public void onError(String error) {
-                                    if (list.size() == 5) callback.onSuccess(list);
+                                    callback.onSuccess(list);
                                 }
                             });
                         }
@@ -288,9 +263,18 @@ public class FirebaseNetwork {
         }
     }
 
-    /***
-     * Realiza o logout do usuário.
-     */
+    public static void recuperaSenha(String email){
+        initAuth();
+        if (auth != null){
+            auth.sendPasswordResetEmail(email).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.e("ERRO:", e.getLocalizedMessage());
+                }
+            });
+        }
+    }
+
     public static void signOut() {
         initAuth();
         auth.signOut();

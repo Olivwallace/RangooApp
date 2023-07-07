@@ -34,7 +34,7 @@
             android:visibility="visible">
 
             <ImageButton
-                android:id="@+id/btn_open_drawer"
+                android:id="@+id/btn_openDrawer"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="15dp"
                 android:layout_width="30dp"
@@ -71,4 +71,5 @@
             />
 
     </LinearLayout>
+
 </androidx.drawerlayout.widget.DrawerLayout>

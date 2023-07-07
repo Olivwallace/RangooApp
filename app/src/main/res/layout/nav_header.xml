@@ -16,25 +16,23 @@
         android:layout_centerVertical="true"
         />
 
-    <LinearLayout
-        android:gravity="end"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <ImageView
-            style="@style/seekBar"
-            android:layout_width="20dp"
-            android:layout_height="20dp">
+<!--    <LinearLayout-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:layout_alignParentEnd="true"-->
+<!--        android:gravity="center"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content">-->
+<!--        <ImageView-->
+<!--            android:layout_width="20dp"-->
+<!--            android:layout_height="20dp"-->
+<!--            style="@style/seekBar"/>.-->
 
-        </ImageView>
+<!--        <Switch-->
+<!--            android:id="@+id/mode"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"/>-->
+<!--    </LinearLayout>-->
 
-        <SeekBar
-            android:layout_marginTop="2dp"
-            android:layout_marginRight="3dp"
-            android:id="@+id/seek_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:max="2"
-            style="@style/seekBar" />
-    </LinearLayout>
+
 
 </RelativeLayout>

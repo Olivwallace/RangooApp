@@ -5,7 +5,10 @@ import static android.content.Context.MODE_PRIVATE;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.example.rangoo.Model.Food;
 import com.example.rangoo.R;
+
+import java.util.ArrayList;
 
 public class SharedPreferecesSingleton {
 
@@ -43,4 +46,14 @@ public class SharedPreferecesSingleton {
     public boolean getLoggedIn(){
         return sharedPreferences.getBoolean("isLoggedIn", false);
     }
+
+    public void setDarkMode(boolean status) {
+        sharedPreferences.edit().putBoolean("darkMode", status).apply();
+    }
+
+    public boolean getDarkMode(){
+        return  sharedPreferences.getBoolean("darkMode", true);
+    }
+
+
 }

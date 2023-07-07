@@ -4,10 +4,16 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.ImageView;
+import android.widget.SeekBar;
+import android.widget.Switch;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.view.GravityCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,11 +21,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.rangoo.Adapter.HomeAdapter;
 import com.example.rangoo.Interfaces.AdapterListener;
 import com.example.rangoo.Interfaces.ConfirmCallback;
+import com.example.rangoo.Interfaces.SaveDataCallback;
 import com.example.rangoo.Model.Food;
 import com.example.rangoo.Network.FirebaseNetwork;
 import com.example.rangoo.R;
 import com.example.rangoo.Utils.GoTo;
+import com.example.rangoo.Utils.SharedPreferecesSingleton;
 import com.example.rangoo.databinding.ActivityHomeListBinding;
+import com.example.rangoo.databinding.NavHeaderBinding;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
@@ -33,10 +42,18 @@ public class HomeListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(SharedPreferecesSingleton.getInstance(getApplicationContext()).getDarkMode()){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+
         binding = ActivityHomeListBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         userList = getIntent().getExtras().getParcelableArrayList(getString(R.string.USER_LIST));
+        if(userList.size() < 5) binding.btnAddMore.setVisibility(View.VISIBLE);
+        if(userList.size() == 0) GoTo.homeView(HomeListActivity.this);
 
         homeAdapter = new HomeAdapter(userList);
         binding.recyclerView.setAdapter(homeAdapter);
@@ -64,6 +81,12 @@ public class HomeListActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void recreate() {
+        super.recreate();
+        getIntent().putExtra(getString(R.string.USER_LIST), homeAdapter.getList());
+    }
+
     protected void buttonsListener(){
         binding.btnOpenDrawer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +101,7 @@ public class HomeListActivity extends AppCompatActivity {
                 GoTo.weekMenu(HomeListActivity.this, userList);
             }
         });
+
     }
 
     protected void drawerNavigation(){
@@ -96,6 +120,11 @@ public class HomeListActivity extends AppCompatActivity {
                     case R.id.nav_about:
                         GoTo.aboutView(HomeListActivity.this);
                         break;
+                    case R.id.mode_define:
+                        SharedPreferecesSingleton.getInstance(getApplicationContext())
+                                .setDarkMode(!SharedPreferecesSingleton.getInstance(getApplicationContext()).getDarkMode());
+                        recreate();
+                        break;
                     case R.id.nav_exit:
                         FirebaseNetwork.signOut();
                         GoTo.signInView(HomeListActivity.this);
@@ -106,7 +135,9 @@ public class HomeListActivity extends AppCompatActivity {
                 binding.drawerLayout.close();
                 return false;
             }
+
         });
+
     }
 
 
@@ -166,7 +197,26 @@ public class HomeListActivity extends AppCompatActivity {
                         homeAdapter.notifyItemRemoved(position);
                         homeAdapter.notifyItemRangeChanged(position, homeAdapter.getItemCount());
 
-                        if(homeAdapter.getList().size() < 5) binding.btnAddMore.setVisibility(View.VISIBLE);
+                        if(homeAdapter.getList().size() < 5){
+                            ArrayList<String> userList = new ArrayList<>();
+                            for(Food f: homeAdapter.getList()){
+                                userList.add(f.getIdFood());
+                            }
+
+                            FirebaseNetwork.saveListUser(
+                                    SharedPreferecesSingleton.getInstance(getApplicationContext()).getUserID(), userList, new SaveDataCallback() {
+                                        @Override
+                                        public void onSuccess(boolean success) {
+                                            //
+                                        }
+
+                                        @Override
+                                        public void onError(String error) {
+                                            //
+                                        }
+                                    });
+                            recreate();
+                        }
                         else binding.btnAddMore.setVisibility(View.INVISIBLE);
 
                     } else {

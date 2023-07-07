@@ -11,8 +11,10 @@ public class User {
     private String address;
     private String birthday;
 
+    private String email;
+
     @Exclude
-    private LoginData loginData;
+    private String password;
 
     public User(){}
 
@@ -21,7 +23,8 @@ public class User {
         setPhone(phone);
         setAddress(address);
         setBirthday(birthday);
-        setLoginData(new LoginData(email, password));
+        setEmail(email);
+        setPassword(password);
     }
 
     // ---------------- Setter's and Getter's
@@ -42,15 +45,13 @@ public class User {
         this.birthday = birthday;
     }
 
-    @Exclude
-    public void setEmail(String email) { if(loginData != null) loginData.setEmail(email);  }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     @Exclude
-    public void setPassword(String password) { if (loginData != null) loginData.setPassword(password); }
-
-    @Exclude
-    public void setLoginData(LoginData loginData){
-        this.loginData = loginData;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getName() {
@@ -69,14 +70,14 @@ public class User {
         return birthday;
     }
 
-    @Exclude
-    public String getEmail() { return  loginData.getEmail(); }
+    public String getEmail() {
+        return email;
+    }
 
     @Exclude
-    public String getPassword() { return  loginData.getPassword(); }
-
-    @Exclude
-    public LoginData getLoginData() { return  loginData; }
+    public String getPassword() {
+        return password;
+    }
 
     // ---------------- Utils
     public String toJSON(){

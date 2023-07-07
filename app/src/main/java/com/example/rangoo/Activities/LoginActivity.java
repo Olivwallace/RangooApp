@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import com.example.rangoo.Interfaces.AuthCallback;
 import com.example.rangoo.Model.LoginData;
@@ -31,6 +32,13 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
+
+        if(SharedPreferecesSingleton.getInstance(getApplicationContext()).getDarkMode()){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+
         setContentView(binding.getRoot());
 
         google = new GoogleNetwork();
@@ -46,8 +54,8 @@ public class LoginActivity extends AppCompatActivity {
         binding.resetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(findViewById(android.R.id.content), R.string.solicitacao_redefinicao_enviada, Snackbar.LENGTH_SHORT)
-                        .setBackgroundTint(getColor(R.color.pumpkin)).show();
+               Intent intent = new Intent(LoginActivity.this, resert_pass.class);
+               startActivity(intent);
             }
         });
 

@@ -9,12 +9,14 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import com.example.rangoo.Interfaces.AuthCallback;
 import com.example.rangoo.Model.User;
 import com.example.rangoo.Network.FirebaseNetwork;
 import com.example.rangoo.R;
 import com.example.rangoo.Utils.GoTo;
+import com.example.rangoo.Utils.SharedPreferecesSingleton;
 import com.example.rangoo.Utils.StringUtils;
 import com.example.rangoo.databinding.ActivitySignUpBinding;
 import com.google.android.material.datepicker.MaterialDatePicker;
@@ -39,6 +41,13 @@ public class SignUpActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivitySignUpBinding.inflate(getLayoutInflater());
+
+        if(SharedPreferecesSingleton.getInstance(getApplicationContext()).getDarkMode()){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+
         setContentView(binding.getRoot());
 
         binding.btnConclude.setEnabled(false);

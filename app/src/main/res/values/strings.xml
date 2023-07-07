@@ -40,4 +40,5 @@
     <string name="USER_ID">USER_ID</string>
     <string name="sua_lista_de_pratos">Sua lista de Pratos</string>
     <string name="opc_semana">Opções da Semana</string>
+    <string name="enviar">enviar</string>
 </resources>

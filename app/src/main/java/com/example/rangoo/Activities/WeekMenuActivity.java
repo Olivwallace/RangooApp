@@ -5,10 +5,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.view.GravityCompat;
 
 import com.example.rangoo.Adapter.ListAdapter;
@@ -20,6 +22,7 @@ import com.example.rangoo.Model.Food;
 import com.example.rangoo.Network.FirebaseNetwork;
 import com.example.rangoo.R;
 import com.example.rangoo.Utils.GoTo;
+import com.example.rangoo.Utils.SharedPreferecesSingleton;
 import com.example.rangoo.databinding.ActivityWeekMenuBinding;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -38,6 +41,11 @@ public class WeekMenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityWeekMenuBinding.inflate(getLayoutInflater());
+        if(SharedPreferecesSingleton.getInstance(getApplicationContext()).getDarkMode()){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
         setContentView(binding.getRoot());
 
         userList = getIntent().getExtras().getParcelableArrayList(getString(R.string.USER_LIST));
@@ -119,6 +127,11 @@ public class WeekMenuActivity extends AppCompatActivity {
                     case R.id.nav_about:
                         GoTo.aboutView(WeekMenuActivity.this);
                         break;
+                    case R.id.mode_define:
+                        SharedPreferecesSingleton.getInstance(getApplicationContext())
+                                .setDarkMode(!SharedPreferecesSingleton.getInstance(getApplicationContext()).getDarkMode());
+                        recreate();
+                        break;
                     case R.id.nav_exit:
                         FirebaseNetwork.signOut();
                         GoTo.signInView(WeekMenuActivity.this);
@@ -130,6 +143,8 @@ public class WeekMenuActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+
     }
 
     protected void saveList(){
